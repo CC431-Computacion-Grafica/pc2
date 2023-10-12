@@ -15,10 +15,8 @@
 
         numero = getRndInteger(0, 10);
         digitos = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
-        operaciones = ["+", "-", "x", "/"];
-        chars = digitos.concat(operaciones);
-        random = Math.floor(Math.random() * chars.length);
-        aleatorio = chars[random];
+        random = Math.floor(Math.random() * digitos.length);
+        aleatorio = digitos[random];
 
         document.getElementById('mensaje').innerHTML  = 'Dibujando un ' + aleatorio;
         document.getElementById('numero').value = aleatorio;
@@ -90,6 +88,13 @@
         <input id="myImage" name="myImage" type="hidden" value="">
         <input id="bt_upload" type="submit" value="Enviar">
         </form>
+    </div>
+    <div align = "center" style="margin-top: 10px;">
+        <button onclick="location.href = '/prepare'">Prepare Data</button>
+    </div>
+    <div align = "center" style="margin-top: 10px;">
+        <button onclick="location.href = '/X.npy'">Descargar X</button>
+        <button onclick="location.href = '/y.npy'">Descargar Y</button>
     </div>
 </body>
 </html>
