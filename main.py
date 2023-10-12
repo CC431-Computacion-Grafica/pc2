@@ -18,8 +18,6 @@ def upload():
         # check if the post request has the file part
         img_data = request.form.get('myImage').replace("data:image/png;base64,","")
         aleatorio = request.form.get('numero')
-        print(aleatorio)
-        aleatorio = toDirectory(aleatorio)
         with tempfile.NamedTemporaryFile(delete = False, mode = "w+b", suffix='.png', dir=str(aleatorio)) as fh:
             fh.write(base64.b64decode(img_data))
         #file = request.files['myImage']
@@ -34,7 +32,7 @@ def upload():
 @app.route('/prepare', methods=['GET'])
 def prepare_dataset():
     images = []
-    chars = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "-", "x", "/"]
+    chars = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
     digits = []
     for char in chars:
         filelist = glob.glob('{}/*.png'.format(char))
@@ -47,7 +45,7 @@ def prepare_dataset():
     digits = np.concatenate(digits)
     np.save('X.npy', images)
     np.save('y.npy', digits)
-    return "OK!"
+    return render_template('prepare.html')
 
 @app.route('/X.npy', methods=['GET'])
 def download_X():
@@ -56,22 +54,8 @@ def download_X():
 def download_y():
     return send_file('./y.npy')
 
-def toDirectory(value):
-    match value:
-        case 'x':
-            return 'TIMES'
-        case '/':
-            return 'DIVS'
-        case '+':
-            return 'PLUS'
-        case '-':
-            return 'MINUS'
-        case _:
-            return value
-            
-
 if __name__ == "__main__":
-    chars = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "PLUS", "MINUS", "TIMES", "DIVS"]
+    chars = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
     for c in chars:
         if not os.path.exists(str(c)):
             os.mkdir(str(c))
